@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 import { auth } from '@clerk/nextjs/server';
-import { PrismaClient } from '@prisma/client/extension';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 // Configuration
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINAR_API_KEY,
+  api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET 
 });
 
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
   
     if (
       !process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
-      !process.env.CLOUDINAR_API_KEY ||
+      !process.env.CLOUDINARY_API_KEY ||
       !process.env.CLOUDINARY_API_SECRET
     ) {
       return NextResponse.json({ error: "Cloudinary not configured" }, { status: 500 });
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
         title,
         description,
         publicId: result.public_id,
-        originalSize: parseInt(originalSize),
+        originalSize: originalSize,
         compressedSize: String(result.bytes),
         duration: result.duration || 0,
       }

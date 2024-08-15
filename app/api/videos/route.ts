@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(videos);
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: "Error fetching videos" }, { status: 502 });
   } finally {
     await prisma.$disconnect();
